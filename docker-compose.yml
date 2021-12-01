@@ -1,34 +1,29 @@
 version: '3.3'
 
-
 services:
     db:
-	imaga: mysql:5.7
-	volumes:
-	   - ./mysql:/var/lib/mysql
-	ports:
-	   - "3306:3306"
-	restart: always
-	environment:
-	    MYSQL_ROOT_PASSWORD: wordpresdb
-	    MYSQL_DATABASE: wordpress
-	    MYSQL_USER: wordpress
-	    MYSQL_PASSWORD: wordpress
+    image: mysql:5.7
+    restart: always
+    environment:
+          MYSQL_ROOT_PASSWORD: wordpressdb
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_PASSWORD: wordpress
+    volumes:
+      - ./mysql:/var/lib/mysql
 
 
+
+    
     wordpress:
-	depends_on:
-	    - db    
-	image: wordpress:latest
-	volumes:
-	   - ./src/themes:/var/www/html/wp-content/themes
-	   - ./src/plugins:/var/www/html/wp-content/plugins
-	   - ./src/uploads:/var/www/html/wp-content/uploads
-	ports:
-	   - "8000:80"
-	restart: always
-	environment:
-	    WORDPRESS_DB_HOST: db
-	    WORDPRESS_DB_USER: wordpress
-	    WORDPRESS_DB_PASSWORD: wordpress
-	    WORDPRESS_DB_NAME: wordpress
+        depends_on:
+            -db
+        image: wordpress:latest
+        restart: always
+        ports:
+          - "8000:80"
+        environment:
+          WORDPRESS_DB_HOST: db
+          WORDPRESS_DB_USER: wordpress
+          WORDPRESS_DB_PASSWORD: wordpress
+          WORDPRESS_DB_NAME: wordpress
